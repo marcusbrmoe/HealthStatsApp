@@ -67,98 +67,104 @@ console.log(stats);
     who does not fill in the info every day.
     Trainings could be added in the same sense, few during december and july. More during autumn and spring. */
 
+    // Here I'm just playing around trying to create some realistic looking data. 
+
     var date = new Date(2021, 1, 5);
 
     var weight = 98.9;
 
     var waist = 107.0;
 
-    for(var i = 0; i < 100; i++) {
-        // increment date
-        var tomorrow = new Date(date.setDate(date.getDate() + 1));
-        
-        // If randomNum = 1, add weight and waist value. If randomNum = 2 subtract value. 
-        let randomNum = Math.floor(Math.random() * 3) + 1;
+    for(var i = 0; i < 10; i++) {
+        let randomNum = Math.floor(Math.random() * 5) + 1;
 
-        let newWaist = waist;
-        let newWeight = weight;
-        if(randomNum === 1) {       
-            randomNum = Math.floor(Math.random() * 2) + 1;
+        var tomorrow = new Date(date.setDate(date.getDate() + 1));      // increment date
+
+        if (randomNum < 5) {                   // 1 out of 5 days are not registered by the user. 
             
-            if(randomNum == 1) {
-                randomNum = Math.random();
-                weight = weight + randomNum;
-                newWeight = parseFloat(weight.toFixed(1)); 
-            } else{
-                randomNum = Math.random();
-                weight = weight + randomNum;
-                newWeight = null;
-            }
-    
-            if(randomNum == 1) {
-                randomNum = Math.random();
-                waist = waist + randomNum;
-                newWaist = parseFloat(waist.toFixed(1));
-            } else{
-                randomNum = Math.random();
-                waist = waist + randomNum;
-                newWaist = null;
-            }
-        } else {
-            randomNum = Math.floor(Math.random() * 2) + 1;
+            // If randomNum = 1, add weight and waist value. If randomNum = 2 or 3 subtract value. 
+            randomNum = Math.floor(Math.random() * 3) + 1;
 
-            if(randomNum == 1) {
-                randomNum = Math.random();
-                weight = weight - randomNum;
-                newWeight = parseFloat(weight.toFixed(1)); 
-            } else{
-                randomNum = Math.random();
-                weight = weight - randomNum;
-                newWeight = null;
-            }
-            
-            randomNum = Math.floor(Math.random() * 2) + 1;
-            if(randomNum == 1) {
-                randomNum = Math.random();
-                waist = waist - randomNum;
-                newWaist = parseFloat(waist.toFixed(1));
-            } else{
-                randomNum = Math.random();
-                waist = waist - randomNum;
-                newWaist = null;
-            }
-        }
-
-        randomNum = Math.floor(Math.random() * 2) + 1;      // Exercises and inputs data every other day (1/2)
+            let newWaist = waist;
+            let newWeight = weight;
+            if(randomNum === 1) {       
+                randomNum = Math.floor(Math.random() * 2) + 1;
+                
+                if(randomNum == 1) {
+                    randomNum = Math.random();
+                    weight = weight + randomNum;
+                    newWeight = parseFloat(weight.toFixed(1)); 
+                } else{
+                    randomNum = Math.random();
+                    weight = weight + randomNum;
+                    newWeight = null;
+                }
         
-        if(randomNum === 1) {
-            randomNum = Math.floor(Math.random() * 1201) + 200; 
-        } else {
-            randomNum = null; 
-        }
-        kCal = randomNum
-
-        randomNum = Math.floor(Math.random() * 2) + 1;
-        if (randomNum === 1) {
-            randomNum = Math.floor(Math.random() * 3) + 1;  // 1/3 chance that the person slept bad. 
-            if (randomNum == 1) {
-                slept = false;
+                if(randomNum == 1) {
+                    randomNum = Math.random();
+                    waist = waist + randomNum;
+                    newWaist = parseFloat(waist.toFixed(1));
+                } else{
+                    randomNum = Math.random();
+                    waist = waist + randomNum;
+                    newWaist = null;
+                }
             } else {
-                slept = true;
+                randomNum = Math.floor(Math.random() * 2) + 1;
+
+                if(randomNum == 1) {
+                    randomNum = Math.random();
+                    weight = weight - randomNum;
+                    newWeight = parseFloat(weight.toFixed(1)); 
+                } else{
+                    randomNum = Math.random();
+                    weight = weight - randomNum;
+                    newWeight = null;
+                }
+                
+                randomNum = Math.floor(Math.random() * 2) + 1;
+                if(randomNum == 1) {
+                    randomNum = Math.random();
+                    waist = waist - randomNum;
+                    newWaist = parseFloat(waist.toFixed(1));
+                } else{
+                    randomNum = Math.random();
+                    waist = waist - randomNum;
+                    newWaist = null;
+                }
             }
-        } else {
-            slept = null;
+
+            randomNum = Math.floor(Math.random() * 2) + 1;      // Exercises and inputs data every other day (1/2)
+            
+            if(randomNum === 1) {
+                randomNum = Math.floor(Math.random() * 1201) + 200; 
+            } else {
+                randomNum = null; 
+            }
+            kCal = randomNum
+
+            randomNum = Math.floor(Math.random() * 2) + 1;
+            if (randomNum === 1) {
+                randomNum = Math.floor(Math.random() * 3) + 1;  // 1/3 chance that the person slept bad. 
+                if (randomNum == 1) {
+                    slept = false;
+                } else {
+                    slept = true;
+                }
+            } else {
+                slept = null;
+            }
+            
+            daystats =  {
+                        date: tomorrow, 
+                        weight: newWeight, 
+                        waist: newWaist, 
+                        kCal: kCal, 
+                        slept: slept
+                        };
+            
+            stats.push(daystats);
         }
-        
-        daystats =  {
-                    date: tomorrow, 
-                    weight: newWeight, 
-                    waist: newWaist, 
-                    kCal: kCal, 
-                    slept: slept
-                    };
-        
-        stats.push(daystats);
     }
 
 // Task 2: Then do whatever reports / analysis or so, with all the measurements you hard-coded above
@@ -190,7 +196,7 @@ function avgWeight() {
 }
 avgWeight();                    // Shows the average LOGGED weight
 
-function goal() {
+function goal() {  
     for(let i = 0; i < stats.length; i++) {
         if (stats[i].weight <= personalInfo.weightGoal && stats[i].weight != null) {
             console.log('Congratz, you have reached your weight goal! ' + stats[i].date)
@@ -205,11 +211,34 @@ function goal() {
         }
     }
 }
-goal(); 
+goal();                            // Shows if and when the person reached their waist and/or weight goal
+
+function checkTrainings(calories) {
+    var count = 0;
+
+    for(let i = 0; i < stats.length; i++) {
+        if(stats[i].kCal > calories) {
+            count++
+        }
+    }
+
+    console.log('You have ' + count + ' days where your training burned more than ' + calories + ' kilo-calories')
+}
+checkTrainings(500);            // Check how many trainings burned more than 500 kCal. 
+
+var sleepTraining = function(sleep, calories) {
+    for(let i = 0; i < stats.length; i++) {
+        if(stats[i].slept = sleep && stats[i].kCal > calories) {
+            console.log(stats[i].date.toDateString() + ' You slept well and burned ' + stats[i].kCal + ' that day')
+        }
+    }
+}
+sleepTraining(true, 500);       // Shows days where you slept well and burned more than 500 kCal. 
+
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
-(function () {
+(function () {              // No need for anyone to access the info yet. 
     const JSONstats = JSON.stringify(stats);
     console.log(JSONstats);
 
