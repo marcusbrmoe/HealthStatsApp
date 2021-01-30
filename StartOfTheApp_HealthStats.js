@@ -36,7 +36,7 @@
 // For processing, if we decide so, the missing data could be assumed or interpolated there
 
 const personalInfo = { name:"Mike", height:175, dob:new Date(1989, 0, 31), 
-                       maxBpm: 188, weightGoal:85.0, waistGoal:95.5, dateGoal:new Date(2021,6,1) };
+                       maxBpm: 188, weightGoal:85.0, waistGoal:95.5, goalDate:new Date(2021,6,1) };
 
 const stats = [  
                     {date:new Date(2021, 0, 25), weight:96.4, waist:106.5, kCal:0,     slept:true,  },
@@ -69,45 +69,46 @@ console.log(stats);
 
     // Here I'm just playing around trying to create some realistic looking data. 
 
-    var date = new Date(2021, 1, 5);
+    var date = new Date(2021, 1, 5);            // Starting date = last input in hardcoded data.
 
-    var weight = 98.9;
+    var weight = 98.9;                          // Starting weight = last input in hardcoded data.
 
-    var waist = 107.0;
+    var waist = 107.0;                          // Starting waist = last input in hardcoded data. 
 
-    for(var i = 0; i < 10; i++) {
+    for(var i = 0; i < 10; i++) {               // Creates stats for x amount of days.
+
+        const day = {};                         // This day's stats
+
         let randomNum = Math.floor(Math.random() * 5) + 1;
 
-        var tomorrow = new Date(date.setDate(date.getDate() + 1));      // increment date
+        var tomorrow = new Date(date.setDate(date.getDate() + 1));      // Increment date.
+        day.date = tomorrow;
 
-        if (randomNum < 5) {                   // 1 out of 5 days are not registered by the user. 
+        if (randomNum < 5) {                    // 1 out of 5 days are not registered by the user. 
             
             // If randomNum = 1, add weight and waist value. If randomNum = 2 or 3 subtract value. 
+            // The person wishes to loose weight and therefore there is a 2/3 chance he will loose weight.
             randomNum = Math.floor(Math.random() * 3) + 1;
 
-            let newWaist = waist;
-            let newWeight = weight;
             if(randomNum === 1) {       
                 randomNum = Math.floor(Math.random() * 2) + 1;
                 
                 if(randomNum == 1) {
                     randomNum = Math.random();
                     weight = weight + randomNum;
-                    newWeight = parseFloat(weight.toFixed(1)); 
+                    day.weight = parseFloat(weight.toFixed(1));
                 } else{
                     randomNum = Math.random();
                     weight = weight + randomNum;
-                    newWeight = null;
                 }
         
                 if(randomNum == 1) {
                     randomNum = Math.random();
                     waist = waist + randomNum;
-                    newWaist = parseFloat(waist.toFixed(1));
+                    day.waist = parseFloat(waist.toFixed(1));
                 } else{
                     randomNum = Math.random();
                     waist = waist + randomNum;
-                    newWaist = null;
                 }
             } else {
                 randomNum = Math.floor(Math.random() * 2) + 1;
@@ -115,70 +116,61 @@ console.log(stats);
                 if(randomNum == 1) {
                     randomNum = Math.random();
                     weight = weight - randomNum;
-                    newWeight = parseFloat(weight.toFixed(1)); 
+                    day.weight = parseFloat(weight.toFixed(1));
                 } else{
                     randomNum = Math.random();
                     weight = weight - randomNum;
-                    newWeight = null;
                 }
                 
                 randomNum = Math.floor(Math.random() * 2) + 1;
                 if(randomNum == 1) {
                     randomNum = Math.random();
                     waist = waist - randomNum;
-                    newWaist = parseFloat(waist.toFixed(1));
+                    day.waist = parseFloat(waist.toFixed(1));
                 } else{
                     randomNum = Math.random();
                     waist = waist - randomNum;
-                    newWaist = null;
                 }
             }
 
-            randomNum = Math.floor(Math.random() * 2) + 1;      // Exercises and inputs data every other day (1/2)
+            randomNum = Math.floor(Math.random() * 3) + 1;      // Exercises and inputs data 2/3 days.
             
-            if(randomNum === 1) {
-                randomNum = Math.floor(Math.random() * 1201) + 200; 
-            } else {
-                randomNum = null; 
-            }
-            kCal = randomNum
+            if(randomNum !== 1) {
+                randomNum = Math.floor(Math.random() * 1201) + 200;     // Exercises vary between 200 - 1200 kCal. 
+                day.kCal = randomNum;
+            } 
 
             randomNum = Math.floor(Math.random() * 2) + 1;
             if (randomNum === 1) {
                 randomNum = Math.floor(Math.random() * 3) + 1;  // 1/3 chance that the person slept bad. 
-                if (randomNum == 1) {
+                if (randomNum === 1) {
                     slept = false;
+                    day.slept = false;
                 } else {
                     slept = true;
+                    day.slept = true;
                 }
-            } else {
-                slept = null;
             }
             
-            daystats =  {
-                        date: tomorrow, 
-                        weight: newWeight, 
-                        waist: newWaist, 
-                        kCal: kCal, 
-                        slept: slept
-                        };
-            
-            stats.push(daystats);
+            stats.push(day);
         }
     }
 
-// Task 2: Then do whatever reports / analysis or so, with all the measurements you hard-coded above
+    
+    // Task 2: Then do whatever reports / analysis or so, with all the measurements you hard-coded above
 
-var trainings = function () {
-    let count = 0;
+//var hello = 'Hello!'              // Global scoped var (hello = 'Hello!'; === implicit global scope var)
+
+const trainings = function () {
+    let count = 0;                  // Function scoped let variable
     for (let i = 0; i < stats.length; i++) {
         if(stats[i].kCal > 0) {
             count++;
         }
     }
-    console.log(count);
+    console.log('You trained ' + count + ' times this period');
 }
-trainings();                    // Count trainings. A training is a day were more than 0 kCal is registred.
+trainings();                        // Count trainings. A training is a day were more than 0 kCal is registred.
 
 function avgWeight() {
     let totWeight = 0;
@@ -192,9 +184,9 @@ function avgWeight() {
 
     const avgWeight = totWeight / count;
 
-    console.log(avgWeight); 
+    console.log('Your logged average weight is: ' + avgWeight.toFixed(1)); 
 }
-avgWeight();                    // Shows the average LOGGED weight
+avgWeight();                        // Shows the average LOGGED weight
 
 function goal() {  
     for(let i = 0; i < stats.length; i++) {
@@ -211,8 +203,9 @@ function goal() {
         }
     }
 }
-goal();                            // Shows if and when the person reached their waist and/or weight goal
+goal();                             // Shows if and when the person reached their waist and/or weight goal
 
+var wishedkCal = 500;               // Global var variable. 
 function checkTrainings(calories) {
     var count = 0;
 
@@ -224,7 +217,7 @@ function checkTrainings(calories) {
 
     console.log('You have ' + count + ' days where your training burned more than ' + calories + ' kilo-calories')
 }
-checkTrainings(500);            // Check how many trainings burned more than 500 kCal. 
+checkTrainings(wishedkCal);         // Check how many trainings burned more than 500 kCal. 
 
 var sleepTraining = function(sleep, calories) {
     for(let i = 0; i < stats.length; i++) {
@@ -233,18 +226,52 @@ var sleepTraining = function(sleep, calories) {
         }
     }
 }
-sleepTraining(true, 500);       // Shows days where you slept well and burned more than 500 kCal. 
+sleepTraining(true, wishedkCal);    // Shows days where you slept well and burned more than 500 kCal. 
+
+(function (message){                // IIFE = Immediately Invoked Function Expression 
+    console.log(message);
+} ('Hello!'));
+
+const ageCheck = function(name) {   // A function that define and returns a function. Both requiering a value.
+    console.log('Your name is ' + name)
+    return function(age) {
+        if(age <= 15) {
+            console.log('But you are too young to join this gym')
+        } else {
+            console.log('And you are welcome to join this gym')
+        }
+    }
+}
+//ageCheck('Marcus')(24);             // Calling two functions in one line.
+var ageCheckB = ageCheck('Marcus');   // Calling two functions in two lines.
+ageCheckB(12);
+
+var calculator = function(a, b) {
+    let c; 
+    b = Number(b);
+
+    if(Number.isNaN(b)) {
+        c = a % 2;
+    } else {
+        c = (a + b) % 2;
+    }
+
+    console.log(c)
+}
+calculator(3, 6);                       // Random calculator function. Requires only one value, but can take two. 
+calculator(8);
+
+
 
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
-(function () {              // No need for anyone to access the info yet. 
     const JSONstats = JSON.stringify(stats);
     console.log(JSONstats);
 
     const statsTwo = JSON.parse(JSONstats);
     console.log(stats);
-})();
+
 
 
 // Task 4: If want to, start thinking how to generate data. JavaScript is not the best suited
