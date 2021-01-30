@@ -261,8 +261,12 @@ var calculator = function(a, b) {
 calculator(3, 6);                       // Random calculator function. Requires only one value, but can take two. 
 calculator(8);
 
-
-
+var calcWithDefaultValue = (a, b=4) => {    // Random arrow function with a default value (b=4).
+    let c = a + b;                          // Requires only one value, but can take two.
+    console.log(a + ' + ' + b + ' = ' + c);
+}
+calcWithDefaultValue(10);                   // Called with one value. b == 4 here. 
+calcWithDefaultValue(19, 2);                // Called with two values. b == 2 here. 
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
