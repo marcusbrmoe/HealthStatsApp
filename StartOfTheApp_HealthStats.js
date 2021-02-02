@@ -230,11 +230,11 @@ checkTrainings(wishedkCal);         // Check how many trainings burned more than
 /* ---------------------------------------------------------------------------------------------------------- */
 
 var sleepTraining = function(sleep, calories) {
-    for(let i = 0; i < stats.length; i++) {
-        if(stats[i].slept = sleep && stats[i].kCal > calories) {
-            console.log(stats[i].date.toDateString() + ' You slept well and burned ' + stats[i].kCal + ' that day')
+    stats.forEach(day => {                              // Using forEach to cycle through the stats. 
+        if(day.slept = sleep && day.kCal > calories) {
+            console.log(day.date.toDateString() + ': You slept well and burned ' + day.kCal + ' that day')
         }
-    }
+    })
 }
 sleepTraining(true, wishedkCal);    // Shows days where you slept well and burned more than 500 kCal. 
 
@@ -299,7 +299,7 @@ console.log(stats.filter(day => day.slept === true));   // Filtering and showing
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-const randomNumbers = {a: 200, b: 123, c: 456}  // Testing the "deconstructing assignment"
+const randomNumbers = {a: 200, b: 123, c: 456}  // Testing the "destructing assignment"
 const {
     a,
     b,
@@ -307,7 +307,7 @@ const {
 } = randomNumbers; 
 console.log(a, b, c)
 
-const {                         // Making my own version of the "deconstructing assignment"
+const {                         // Making my own version of the "destructing assignment"
     date: oneDate,              // As I already had defined variables by the name date, weight and so on,
     weight: oneWeight,          // I needed to use this syntacs. The value of date in stats[2], is now put 
     waist: oneWaist,            // to a constant with the name "oneDate" and so on. 
