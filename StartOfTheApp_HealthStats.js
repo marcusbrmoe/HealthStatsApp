@@ -161,6 +161,8 @@ console.log(stats);
 
 //var hello = 'Hello!'              // Global scoped var (hello = 'Hello!'; === implicit global scope var)
 
+/* ---------------------------------------------------------------------------------------------------------- */
+
 const trainings = function () {
     let count = 0;                  // Function scoped let variable
     for (let i = 0; i < stats.length; i++) {
@@ -171,6 +173,8 @@ const trainings = function () {
     console.log('You trained ' + count + ' times this period');
 }
 trainings();                        // Count trainings. A training is a day were more than 0 kCal is registred.
+
+/* ---------------------------------------------------------------------------------------------------------- */
 
 function avgWeight() {
     let totWeight = 0;
@@ -187,6 +191,8 @@ function avgWeight() {
     console.log('Your logged average weight is: ' + avgWeight.toFixed(1)); 
 }
 avgWeight();                        // Shows the average LOGGED weight
+
+/* ---------------------------------------------------------------------------------------------------------- */
 
 function goal() {  
     for(let i = 0; i < stats.length; i++) {
@@ -205,6 +211,8 @@ function goal() {
 }
 goal();                             // Shows if and when the person reached their waist and/or weight goal
 
+/* ---------------------------------------------------------------------------------------------------------- */
+
 var wishedkCal = 500;               // Global var variable. 
 function checkTrainings(calories) {
     var count = 0;
@@ -219,6 +227,8 @@ function checkTrainings(calories) {
 }
 checkTrainings(wishedkCal);         // Check how many trainings burned more than 500 kCal. 
 
+/* ---------------------------------------------------------------------------------------------------------- */
+
 var sleepTraining = function(sleep, calories) {
     for(let i = 0; i < stats.length; i++) {
         if(stats[i].slept = sleep && stats[i].kCal > calories) {
@@ -228,9 +238,13 @@ var sleepTraining = function(sleep, calories) {
 }
 sleepTraining(true, wishedkCal);    // Shows days where you slept well and burned more than 500 kCal. 
 
+/* ---------------------------------------------------------------------------------------------------------- */
+
 (function (message){                // IIFE = Immediately Invoked Function Expression 
     console.log(message);
 } ('Hello!'));
+
+/* ---------------------------------------------------------------------------------------------------------- */
 
 const ageCheck = function(name) {   // A function that define and returns a function. Both requiering a value.
     console.log('Your name is ' + name)
@@ -245,6 +259,8 @@ const ageCheck = function(name) {   // A function that define and returns a func
 //ageCheck('Marcus')(24);             // Calling two functions in one line.
 var ageCheckB = ageCheck('Marcus');   // Calling two functions in two lines.
 ageCheckB(12);
+
+/* ---------------------------------------------------------------------------------------------------------- */
 
 var calculator = function(a, b) {
     let c; 
@@ -261,12 +277,59 @@ var calculator = function(a, b) {
 calculator(3, 6);                       // Random calculator function. Requires only one value, but can take two. 
 calculator(8);
 
+/* ---------------------------------------------------------------------------------------------------------- */
+
 var calcWithDefaultValue = (a, b=4) => {    // Random arrow function with a default value (b=4).
     let c = a + b;                          // Requires only one value, but can take two.
     console.log(a + ' + ' + b + ' = ' + c);
 }
 calcWithDefaultValue(10);                   // Called with one value. b == 4 here. 
 calcWithDefaultValue(19, 2);                // Called with two values. b == 2 here. 
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+const array1 = [1, 5, 10, 100];             // Mapping a new array, where each number is x3. 
+const array2 = array1.map(x => x * 3);
+console.log('Four random numbers: ', array1);
+console.log('All numbers x3 = ', array2);
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+console.log(stats.filter(day => day.slept === true));   // Filtering and showing days where sleep was good. 
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+const randomNumbers = {a: 200, b: 123, c: 456}  // Testing the "deconstructing assignment"
+const {
+    a,
+    b,
+    c,
+} = randomNumbers; 
+console.log(a, b, c)
+
+const {                         // Making my own version of the "deconstructing assignment"
+    date: oneDate,              // As I already had defined variables by the name date, weight and so on,
+    weight: oneWeight,          // I needed to use this syntacs. The value of date in stats[2], is now put 
+    waist: oneWaist,            // to a constant with the name "oneDate" and so on. 
+    kCal: onekCal,
+    slept: oneSlept,
+} = stats[2];
+console.log(oneDate, oneWeight, oneWaist, onekCal, oneSlept);   // Printing the value of each individual const. 
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+let numberArray = [1, 2, 3]     // Random array
+let numberArray2 = [...numberArray, ...numberArray, numberArray];   // Creating a "double copy" of numberArray
+console.log(numberArray2);                                          // with a reference value at the end.
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+console.log(randomNumbers);    // randomNumbers is an object created above
+const randomNumbers2 = {...randomNumbers, a: 666, c: 789};  // Creating a copy of randomNumbers,
+console.log(randomNumbers2);                                // but changing a few values.
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
