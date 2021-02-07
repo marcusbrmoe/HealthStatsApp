@@ -375,6 +375,32 @@ console.log(randomNumbers2);
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
+//const amazingWorkouts = stats.filter((_, index) => index % 2 == 0);       // This would return every other day. 
+const amazingWorkouts = stats.filter((day) => day.kCal > 1000 == true);     // Creates array of days where the
+                                                                            // workout burned more than 1000 kCal.
+console.log('---Amazing workouts---');
+console.log(amazingWorkouts)
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+const names = ['Marcus', 'Niklas', 'Joel', 'Patric', 'Aarni']       // Random name array.
+
+const longNames = names.filter((value, index, array) => {           // Filter and find the longest names. 
+    let longerNameFound = false;
+    
+    for(let i = 0; i < array.length; i++) {
+        if(value.length < array[i].length) {
+            longerNameFound = true;
+        }
+    }
+
+    return !longerNameFound;
+});
+console.log('---The longest name(s)!---');
+console.log(longNames); 
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
