@@ -35,17 +35,53 @@
 // Well, no anwers here, but good fuel for your design brain in general. Cases are never 100% straight forward
 // For processing, if we decide so, the missing data could be assumed or interpolated there
 
-const personalInfo = { name:"Mike", height:175, dob:new Date(1989, 0, 31), 
-                       maxBpm: 188, weightGoal:85.0, waistGoal:95.5, goalDate:new Date(2021,6,1) };
+const personalInfo = {
+    name: "Mike",
+    height: 175,
+    dob: new Date(1989, 0, 31),
+    maxBpm: 188,
+    weightGoal: 85.0,
+    waistGoal: 95.5,
+    goalDate: new Date(2021, 6, 1)
+};
 
-const stats = [  
-                    {date:new Date(2021, 0, 25), weight:96.4, waist:106.5, kCal:0,     slept:true,  },
-                    {date:new Date(2021, 0, 27), weight:97.2, waist:105.0, kCal:512,                },
-                    {date:new Date(2021, 1, 1),  weight:99.1, waist:108.0, kCal:1150,  slept:false, },
-                    {date:new Date(2021, 1, 2),  weight:99.0, waist:107.5,             slept:true,  },
-                    {date:new Date(2021, 1, 4),                            kCal:666                 },
-                    {date:new Date(2021, 1, 5),  weight:98.9, waist:107.0,             slept:false, },
-                ];
+const stats = [{
+        date: new Date(2021, 0, 25),
+        weight: 96.4,
+        waist: 106.5,
+        kCal: 0,
+        slept: true,
+    },
+    {
+        date: new Date(2021, 0, 27),
+        weight: 97.2,
+        waist: 105.0,
+        kCal: 512,
+    },
+    {
+        date: new Date(2021, 1, 1),
+        weight: 99.1,
+        waist: 108.0,
+        kCal: 1150,
+        slept: false,
+    },
+    {
+        date: new Date(2021, 1, 2),
+        weight: 99.0,
+        waist: 107.5,
+        slept: true,
+    },
+    {
+        date: new Date(2021, 1, 4),
+        kCal: 666
+    },
+    {
+        date: new Date(2021, 1, 5),
+        weight: 98.9,
+        waist: 107.0,
+        slept: false,
+    },
+];
 
 console.log(stats);
 
@@ -59,114 +95,106 @@ console.log(stats);
 // That's about 5*200*4 = 4 000 logical interconnected data points 
 // (Test data generation is a typical challenge in our customer projects)
 
-    /* Logic: add a random weight value with "corresponding" waist increase/decrease. Create loops that randomly
-    increase weight during december and july at a high rate (0,5-1,5 kg), decrease weight during spring at 
-    a moderate rate ((-0,0)-(-1,0) kg) and maintain weight during autumn ((-0,5)-0,5 kg). Goal is to find a
-    balance to where the data generated (fictive person) do not end up at 0 kg or 500 kg, but stays within 
-    reasonable limits. Also, posting the results at random intervals, giving the "authentic" look of someone 
-    who does not fill in the info every day.
-    Trainings could be added in the same sense, few during december and july. More during autumn and spring. */
+/* Logic: add a random weight value with "corresponding" waist increase/decrease. Create loops that randomly
+increase weight during december and july at a high rate (0,5-1,5 kg), decrease weight during spring at 
+a moderate rate ((-0,0)-(-1,0) kg) and maintain weight during autumn ((-0,5)-0,5 kg). Goal is to find a
+balance to where the data generated (fictive person) do not end up at 0 kg or 500 kg, but stays within 
+reasonable limits. Also, posting the results at random intervals, giving the "authentic" look of someone 
+who does not fill in the info every day.
+Trainings could be added in the same sense, few during december and july. More during autumn and spring. */
 
-    // Here I'm just playing around trying to create some realistic looking data. 
+// Here I'm just playing around trying to create some realistic looking data. 
 
-    var date = new Date(2021, 1, 5);            // Starting date = last input in hardcoded data.
+var date = new Date(2021, 1, 5);    // Starting date = last input in hardcoded data.
 
-    var weight = 98.9;                          // Starting weight = last input in hardcoded data.
+var weight = 98.9;                  // Starting weight = last input in hardcoded data.
 
-    var waist = 107.0;                          // Starting waist = last input in hardcoded data. 
+var waist = 107.0;                  // Starting waist = last input in hardcoded data. 
 
-    for(var i = 0; i < 10; i++) {               // Creates stats for x amount of days.
+for (var i = 0; i < 10; i++) {      // Creates stats for x amount of days.
 
-        const day = {};                         // This day's stats
+    const day = {};                 // This day's stats
 
-        let randomNum = Math.floor(Math.random() * 5) + 1;
+    var tomorrow = new Date(date.setDate(date.getDate() + 1)); // Increment date.
+    day.date = tomorrow;
 
-        var tomorrow = new Date(date.setDate(date.getDate() + 1));      // Increment date.
-        day.date = tomorrow;
+    // If randomNum = 1, add weight and waist value. If randomNum = 4 there are no change. 
+    // If randomNum = 2 or 3 subtract value. 
+    // The person wishes to loose weight and therefore there is a 2/4 chance he will loose weight/waist,
+    // 1/4 chance there will be no change and 1/4 chance he will gain weight/waist. 
+    let randomNum = Math.floor(Math.random() * 4) + 1;
 
-        if (randomNum < 5) {                    // 1 out of 5 days are not registered by the user. 
-            
-            // If randomNum = 1, add weight and waist value. If randomNum = 2 or 3 subtract value. 
-            // The person wishes to loose weight and therefore there is a 2/3 chance he will loose weight.
-            randomNum = Math.floor(Math.random() * 3) + 1;
+    if (randomNum === 1) {
+        randomNum = Math.random();
+        weight = weight + randomNum;
 
-            if(randomNum === 1) {       
-                randomNum = Math.floor(Math.random() * 2) + 1;
-                
-                if(randomNum == 1) {
-                    randomNum = Math.random();
-                    weight = weight + randomNum;
-                    day.weight = parseFloat(weight.toFixed(1));
-                } else{
-                    randomNum = Math.random();
-                    weight = weight + randomNum;
-                }
-        
-                if(randomNum == 1) {
-                    randomNum = Math.random();
-                    waist = waist + randomNum;
-                    day.waist = parseFloat(waist.toFixed(1));
-                } else{
-                    randomNum = Math.random();
-                    waist = waist + randomNum;
-                }
-            } else {
-                randomNum = Math.floor(Math.random() * 2) + 1;
+        randomNum = Math.random();
+        waist = waist + randomNum;
 
-                if(randomNum == 1) {
-                    randomNum = Math.random();
-                    weight = weight - randomNum;
-                    day.weight = parseFloat(weight.toFixed(1));
-                } else{
-                    randomNum = Math.random();
-                    weight = weight - randomNum;
-                }
-                
-                randomNum = Math.floor(Math.random() * 2) + 1;
-                if(randomNum == 1) {
-                    randomNum = Math.random();
-                    waist = waist - randomNum;
-                    day.waist = parseFloat(waist.toFixed(1));
-                } else{
-                    randomNum = Math.random();
-                    waist = waist - randomNum;
-                }
-            }
+    } else if (randomNum < 4) {
+        randomNum = Math.random();
+        weight = weight - randomNum;
 
-            randomNum = Math.floor(Math.random() * 3) + 1;      // Exercises and inputs data 2/3 days.
-            
-            if(randomNum !== 1) {
-                randomNum = Math.floor(Math.random() * 1201) + 200;     // Exercises vary between 200 - 1200 kCal. 
-                day.kCal = randomNum;
-            } 
+        randomNum = Math.random();
+        waist = waist - randomNum;
 
-            randomNum = Math.floor(Math.random() * 2) + 1;
-            if (randomNum === 1) {
-                randomNum = Math.floor(Math.random() * 3) + 1;  // 1/3 chance that the person slept bad. 
-                if (randomNum === 1) {
-                    slept = false;
-                    day.slept = false;
-                } else {
-                    slept = true;
-                    day.slept = true;
-                }
-            }
-            
-            stats.push(day);
-        }
+    } 
+
+    randomNum = Math.floor(Math.random() * 3) + 1;          // Inputs weight data 2/3 days. 
+    if (randomNum > 1) {
+        day.weight = parseFloat(weight.toFixed(1));
+    } 
+
+    randomNum = Math.floor(Math.random() * 3) + 1;          // Inputs waist data 2/3 days.
+    if (randomNum > 1) {
+        day.waist = parseFloat(waist.toFixed(1));
+    } 
+
+    randomNum = Math.floor(Math.random() * 3) + 1;          // Exercises and inputs data 2/3 days.
+    if (randomNum !== 1) {
+        randomNum = Math.floor(Math.random() * 1201) + 200; // Exercises vary between 200 - 1200 kCal. 
+        day.kCal = randomNum;
     }
 
-    
-    // Task 2: Then do whatever reports / analysis or so, with all the measurements you hard-coded above
+    randomNum = Math.floor(Math.random() * 3) + 1;          // 1/3 chance that the person slept bad. 
+    if (randomNum === 1) {
+        day.slept = false;
+    } else {
+        day.slept = true;
+    }
+
+    randomNum = Math.floor(Math.random() * 5) + 1;
+
+    if (randomNum !== 5) {            // 1 out of 5 days are not registered by the user.
+        stats.push(day);
+    }
+}
+
+
+// Task 2: Then do whatever reports / analysis or so, with all the measurements you hard-coded above
 
 //var hello = 'Hello!'              // Global scoped var (hello = 'Hello!'; === implicit global scope var)
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+class dateFormater extends Date {   // Inherits the Date object. 
+
+    getFormatedDate() {             // Formatting the date value.
+        const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+            'September', 'October', 'November', 'December'
+        ]                           // Defining how I want the months to be shown.
+
+        return `${this.getDate()}.${month[this.getMonth()]} ${this.getFullYear()}`; // Using Template literals.
+    }
+}
+console.log(`Formated date: ${new dateFormater(stats[1].date).getFormatedDate()}`); // Test.
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
 const trainings = function () {
     let count = 0;                  // Function scoped let variable
     for (let i = 0; i < stats.length; i++) {
-        if(stats[i].kCal > 0) {
+        if (stats[i].kCal > 0) {
             count++;
         }
     }
@@ -179,32 +207,34 @@ trainings();                        // Count trainings. A training is a day were
 function avgWeight() {
     let totWeight = 0;
     let count = 0;
-    for(let i = 0; i < stats.length; i++) {
+    for (let i = 0; i < stats.length; i++) {
         if (stats[i].weight != undefined) {
             totWeight = totWeight + stats[i].weight;
             count++;
-        } 
+        }
     }
 
     const avgWeight = totWeight / count;
 
-    console.log('Your logged average weight is: ' + avgWeight.toFixed(1)); 
+    console.log('Your logged average weight is: ' + avgWeight.toFixed(1));
 }
 avgWeight();                        // Shows the average LOGGED weight
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-function goal() {  
-    for(let i = 0; i < stats.length; i++) {
+function goal() {
+    for (let i = 0; i < stats.length; i++) {
         if (stats[i].weight <= personalInfo.weightGoal && stats[i].weight != null) {
-            console.log('Congratz, you have reached your weight goal! ' + stats[i].date)
+            console.log('Congratz, you have reached your weight goal! - ' + 
+                            new dateFormater(stats[i].date).getFormatedDate());
             break;
-        } 
+        }
     }
 
-    for(let i = 0; i < stats.length; i++) {
+    for (let i = 0; i < stats.length; i++) {
         if (stats[i].waist <= personalInfo.waistGoal && stats[i].waist != null) {
-            console.log('Congratz, you have reached your waist goal! ' + stats[i].date)
+            console.log('Congratz, you have reached your waist goal! - ' + 
+                            new dateFormater(stats[i].date).getFormatedDate());
             break;
         }
     }
@@ -217,8 +247,8 @@ var wishedkCal = 500;               // Global var variable.
 function checkTrainings(calories) {
     var count = 0;
 
-    for(let i = 0; i < stats.length; i++) {
-        if(stats[i].kCal > calories) {
+    for (let i = 0; i < stats.length; i++) {
+        if (stats[i].kCal > calories) {
             count++
         }
     }
@@ -229,44 +259,47 @@ checkTrainings(wishedkCal);         // Check how many trainings burned more than
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-var sleepTraining = function(sleep, calories) {
-    stats.forEach(day => {                              // Using forEach to cycle through the stats. 
-        if(day.slept = sleep && day.kCal > calories) {
-            console.log(day.date.toDateString() + ': You slept well and burned ' + day.kCal + ' that day')
+var sleepTraining = function (sleep, calories) {
+    let goodDays = [];
+    stats.forEach(day => {          // Using forEach to cycle through the stats. 
+        if (day.slept = sleep && day.kCal > calories) {
+            goodDays = [...goodDays, new dateFormater(day.date).getFormatedDate() + ': You slept well and burned ' + day.kCal + ' that day']
         }
     })
+    console.log(`You had ${goodDays.length} good days this period!`)
+    console.log(goodDays);
 }
 sleepTraining(true, wishedkCal);    // Shows days where you slept well and burned more than 500 kCal. 
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-(function (message){                // IIFE = Immediately Invoked Function Expression 
+(function (message) {               // IIFE = Immediately Invoked Function Expression 
     console.log(message);
-} ('Hello!'));
+}('Hello!'));
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-const ageCheck = function(name) {   // A function that define and returns a function. Both requiering a value.
+const ageCheck = function (name) {  // A function that define and returns a function. Both requiering a value.
     console.log('Your name is ' + name)
-    return function(age) {
-        if(age <= 15) {
+    return function (age) {
+        if (age <= 15) {
             console.log('But you are too young to join this gym')
         } else {
             console.log('And you are welcome to join this gym')
         }
     }
 }
-//ageCheck('Marcus')(24);             // Calling two functions in one line.
-var ageCheckB = ageCheck('Marcus');   // Calling two functions in two lines.
-ageCheckB(12);
+ageCheck('Marcus')(24);                 // Calling two functions in one line.
+//var ageCheckB = ageCheck('Marcus');   // Calling two functions in two lines.
+//ageCheckB(12);
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-var calculator = function(a, b) {
-    let c; 
+var calculator = function (a, b) {
+    let c;
     b = Number(b);
 
-    if(Number.isNaN(b)) {
+    if (Number.isNaN(b)) {
         c = a % 2;
     } else {
         c = (a + b) % 2;
@@ -274,22 +307,22 @@ var calculator = function(a, b) {
 
     console.log(c)
 }
-calculator(3, 6);                       // Random calculator function. Requires only one value, but can take two. 
+calculator(3, 6);               // Random calculator function. Requires only one value, but can take two. 
 calculator(8);
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-var calcWithDefaultValue = (a, b=4) => {    // Random arrow function with a default value (b=4).
-    let c = a + b;                          // Requires only one value, but can take two.
+const calcWithDefaultValue = (a, b = 4) => {            // Random arrow function with a default value (b=4).
+    let c = a + b;                                      // Requires only one value, but can take two.
     console.log(a + ' + ' + b + ' = ' + c);
 }
-calcWithDefaultValue(10);                   // Called with one value. b == 4 here. 
-calcWithDefaultValue(19, 2);                // Called with two values. b == 2 here. 
+calcWithDefaultValue(10);                               // Called with one value. b == 4 here. 
+calcWithDefaultValue(19, 2);                            // Called with two values. b == 2 here. 
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-const array1 = [1, 5, 10, 100];             // Mapping a new array, where each number is x3. 
-const array2 = array1.map(x => x * 3);
+const array1 = [1, 5, 10, 100];                         // Creating a random array. 
+const array2 = array1.map(x => x * 3);                  // Mapping a new array, where each number is x3.
 console.log('Four random numbers: ', array1);
 console.log('All numbers x3 = ', array2);
 
@@ -299,12 +332,16 @@ console.log(stats.filter(day => day.slept === true));   // Filtering and showing
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-const randomNumbers = {a: 200, b: 123, c: 456}  // Testing the "destructing assignment"
+const randomNumbers = {
+    a: 200,
+    b: 123,
+    c: 456
+}                               // Testing the "destructing assignment"
 const {
     a,
     b,
     c,
-} = randomNumbers; 
+} = randomNumbers;
 console.log(a, b, c)
 
 const {                         // Making my own version of the "destructing assignment"
@@ -314,30 +351,38 @@ const {                         // Making my own version of the "destructing ass
     kCal: onekCal,
     slept: oneSlept,
 } = stats[2];
-console.log(oneDate, oneWeight, oneWaist, onekCal, oneSlept);   // Printing the value of each individual const. 
+console.log(oneDate, oneWeight, oneWaist, onekCal, oneSlept);       // Printing the value of each individual const. 
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
 let numberArray = [1, 2, 3]     // Random array
-let numberArray2 = [...numberArray, ...numberArray, numberArray];   // Creating a "double copy" of numberArray
-console.log(numberArray2);                                          // with a reference value at the end.
+let numberArray2 = [...numberArray, ...numberArray, numberArray];   // Creating a new array with a 
+                                                                    // "double copy" of numberArray and
+                                                                    // with a reference value at the end.
+console.log(numberArray2);                                          
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
-console.log(randomNumbers);    // randomNumbers is an object created above
-const randomNumbers2 = {...randomNumbers, a: 666, c: 789};  // Creating a copy of randomNumbers,
-console.log(randomNumbers2);                                // but changing a few values.
+console.log(randomNumbers);     // randomNumbers is an object created above
+const randomNumbers2 = {
+    ...randomNumbers,
+    a: 666,
+    c: 789,
+    d: 911
+};                              // Creating a copy of randomNumbers,
+                                // but changing a few values and adding d-value.
+console.log(randomNumbers2);    
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
 
 // Task 3: Turn the data into JSON and back and make sure it still is valid and same information
 
-    const JSONstats = JSON.stringify(stats);
-    console.log(JSONstats);
+const JSONstats = JSON.stringify(stats);
+console.log(JSONstats);
 
-    const statsTwo = JSON.parse(JSONstats);
-    console.log(stats);
+const statsTwo = JSON.parse(JSONstats);
+console.log(stats);
 
 
 
